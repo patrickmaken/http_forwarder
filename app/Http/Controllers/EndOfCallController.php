@@ -28,7 +28,10 @@ class EndOfCallController extends Controller
         try {
 
             $url = env('CREDIX_REDIRECT_URL');
-            $response = $client->get($url, ['query' => $request->all()]);
+            $response = $client->get($url, [
+                'query' => $request->all(),
+                'proxy' => ['http'  => 'http://10.252.34.55:3128']
+            ]);
             $response = (string)$response->getBody();
             Log::info('EndOfCallController::endofcall#credix_response', compact('response'));
         } catch (Throwable $th) {
