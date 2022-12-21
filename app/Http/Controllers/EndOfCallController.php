@@ -9,6 +9,13 @@ use GuzzleHttp\Client;
 
 class EndOfCallController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('throttle:200,1')->only([
+            'endofcall',
+        ]);
+    }
+
     public function endofcall(Request $request)
     {
         Log::info('[EndOfCallController::endofcall#request_data]', [
