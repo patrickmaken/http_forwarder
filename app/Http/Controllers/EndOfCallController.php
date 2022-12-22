@@ -24,6 +24,7 @@ class EndOfCallController extends Controller
             'url' => $request->fullUrl(),
             'headers' => $request->header(),
             'all_data' => $request->all(),
+            'request_content' => $request->getContent(),
             '$_REQUEST' => $_REQUEST,
         ]);
 
