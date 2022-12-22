@@ -22,6 +22,8 @@ class EndOfCallController extends Controller
         Log::info('EndOfCallController::endofcall#request_data', compact('request_content'));
         $phoneNumber = '237' . explode(';', trim($request_content))[1];
 
+        sleep(10);
+
         $client = new Client([
             'timeout'  => 20.0,
             'verify' => false,
