@@ -19,7 +19,7 @@ class EndOfCallController extends Controller
     public function endofcall(Request $request)
     {
         $request_content = $request->getContent();
-        Log::info('[EndOfCallController::endofcall#request_data]', compact('request_content'));
+        Log::info('EndOfCallController::endofcall#request_data', compact('request_content'));
         // "Dormant;670962331"
 
         $phoneNumber = '237' . explode(';', trim($request_content))[1];
