@@ -18,15 +18,11 @@ class EndOfCallController extends Controller
 
     public function endofcall(Request $request)
     {
-        Log::info('[EndOfCallController::endofcall#request_data]', [
-            'ip' => $request->ip(),
-            'method' => $request->method(),
-            'url' => $request->fullUrl(),
-            'headers' => $request->header(),
-            'all_data' => $request->all(),
-            'request_content' => $request->getContent(),
-            '$_REQUEST' => $_REQUEST,
-        ]);
+        $request_content = $request->getContent();
+        Log::info('[EndOfCallController::endofcall#request_data]', compact('request_content'));
+        // "Dormant;670962331"
+
+        $phoneNumber = '237' . explode(';', trim($request_content))[1];
 
         $client = new Client([
             'timeout'  => 20.0,
@@ -36,9 +32,14 @@ class EndOfCallController extends Controller
         try {
 
             $url = env('CREDIX_REDIRECT_URL');
-            $response = $client->get($url, [
-                'query' => $request->all(),
-                'proxy' => ['http'  => 'http://10.252.34.55:3128']
+            $response = $client->post($url, [
+                'proxy' => ['http'  => 'http://10.252.34.55:3128'],
+                'json' => [
+                    'msisdn' => $phoneNumber,
+                    'message' => 'Hello world form Credix!',
+                    'callbackUrl' => env('CREDIX_CALLBACK_URL'),
+                    'sessionId' => ''.microtime(true)
+                ],
             ]);
             $response = (string)$response->getBody();
             Log::info('EndOfCallController::endofcall#credix_response', compact('response'));
