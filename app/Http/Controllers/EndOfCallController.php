@@ -19,10 +19,10 @@ class EndOfCallController extends Controller
     public function endofcall(Request $request)
     {
         $request_content = $request->getContent();
-        Log::info('EndOfCallController::endofcall#request_data', compact('request_content'));
+        Log::info('request_data', compact('request_content'));
         $phoneNumber = '237' . explode(';', trim($request_content))[1];
 
-        Log::info('EndOfCallController::endofcall#sleep Sleeping for 10 seconds');
+        // Log::info('EndOfCallController::endofcall#sleep Sleeping for 10 seconds');
         sleep(10);
 
         $client = new Client([
@@ -43,7 +43,7 @@ class EndOfCallController extends Controller
                 ],
             ]);
             $response = (string)$response->getBody();
-            Log::info('EndOfCallController::endofcall#credix_response', compact('response'));
+            // Log::info('EndOfCallController::endofcall#credix_response', compact('response'));
         } catch (Throwable $th) {
             Log::error('EndOfCallController::endofcall#catch', [
                 'th.message' => $th->getMessage(),
