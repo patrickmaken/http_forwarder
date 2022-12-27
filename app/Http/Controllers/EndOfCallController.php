@@ -22,8 +22,9 @@ class EndOfCallController extends Controller
         Log::info('request_data', compact('request_content'));
         $phoneNumber = '237' . explode(';', trim($request_content))[1];
 
-        // Log::info('EndOfCallController::endofcall#sleep Sleeping for 10 seconds');
-        sleep(10);
+        $sleepingTime = env('SLEEPING_TIME');
+        Log::info("EndOfCallController::endofcall#sleep Sleeping for $sleepingTime seconds");
+        sleep($sleepingTime);
 
         $client = new Client([
             'timeout'  => 20.0,
