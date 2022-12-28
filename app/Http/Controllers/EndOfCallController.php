@@ -20,12 +20,14 @@ class EndOfCallController extends Controller
     public function endofcall(Request $request)
     {
         $request_content = $request->getContent();
-        Log::info('request_data', compact('request_content'));
+        Log::info('MTN_EOC_INPUT', compact('request_content'));
         $phoneNumber = Str::start(explode(';', trim($request_content))[1], '237');
 
         $sleepingTime = env('SLEEPING_TIME');
-        Log::info("EndOfCallController::endofcall#sleep Sleeping for $sleepingTime seconds");
-        sleep($sleepingTime);
+        if($sleepingTime > 0) {
+            Log::info("sleep Sleeping for $sleepingTime seconds");
+            sleep($sleepingTime);
+        }
 
         $client = new Client([
             'timeout'  => 20.0,
@@ -42,7 +44,7 @@ class EndOfCallController extends Controller
                 ],
             ]);
             $response = (string)$response->getBody();
-            // Log::info('EndOfCallController::endofcall#credix_response', compact('response'));
+            Log::info('MOMOKASH_GO_RESPONSE', compact('response'));
         } catch (Throwable $th) {
             Log::error('EndOfCallController::endofcall#catch', [
                 'th.message' => $th->getMessage(),
