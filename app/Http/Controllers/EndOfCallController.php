@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Log;
 use Throwable;
 use GuzzleHttp\Client;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class EndOfCallController extends Controller
 {
@@ -20,7 +21,7 @@ class EndOfCallController extends Controller
     {
         $request_content = $request->getContent();
         Log::info('request_data', compact('request_content'));
-        $phoneNumber = '237' . explode(';', trim($request_content))[1];
+        $phoneNumber = Str::start(explode(';', trim($request_content))[1], '237');
 
         $sleepingTime = env('SLEEPING_TIME');
         Log::info("EndOfCallController::endofcall#sleep Sleeping for $sleepingTime seconds");
@@ -37,10 +38,7 @@ class EndOfCallController extends Controller
             $response = $client->post($url, [
                 'proxy' => ['http'  => 'http://10.252.34.55:3128'],
                 'json' => [
-                    'msisdn' => $phoneNumber,
-                    'message' => 'Hello world form Credix!',
-                    'callbackUrl' => env('CREDIX_CALLBACK_URL'),
-                    'sessionId' => ''.microtime(true)
+                    'msisdn' => $phoneNumber
                 ],
             ]);
             $response = (string)$response->getBody();
