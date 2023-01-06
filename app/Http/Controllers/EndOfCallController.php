@@ -46,7 +46,7 @@ class EndOfCallController extends Controller
             $response = (string)$response->getBody();
             Log::info('MOMOKASH_GO_RESPONSE', compact('response'));
         } catch (Throwable $th) {
-            Log::error('EndOfCallController::endofcall#catch', [
+            Log::error('MOMOKASH_GO_ERROR', [
                 'th.message' => $th->getMessage(),
                 'url' => $url,
             ]);
