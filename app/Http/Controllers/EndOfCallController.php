@@ -40,7 +40,8 @@ class EndOfCallController extends Controller
             $response = $client->post($url, [
                 'proxy' => ['http'  => 'http://10.252.34.55:3128'],
                 'json' => [
-                    'msisdn' => $phoneNumber
+                    'msisdn' => $phoneNumber,
+                    'language' => env('LANGUAGE'),
                 ],
             ]);
             $response = (string)$response->getBody();
